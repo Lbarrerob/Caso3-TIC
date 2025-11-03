@@ -6,25 +6,13 @@ import java.util.List;
 
 public class BuzonCuarentena {
     private Queue<Correo> correos;
-    private final int capacidad;
 
-    // Nuevo constructor con capacidad
-    public BuzonCuarentena(int capacidad){
+    public BuzonCuarentena(){
         this.correos = new LinkedList<Correo>();
-        if (capacidad <= 0) this.capacidad = -1;
-        else this.capacidad = capacidad;
     }
 
     // Pone correo en cuarentena
-    public synchronized void ponerCorreo(Correo correo){
-        while (capacidad > 0 && tamaño() >= capacidad) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
+    public synchronized void ponerCorreo(Correo correo) {
         correos.add(correo);
         notifyAll();
     }
@@ -37,6 +25,7 @@ public class BuzonCuarentena {
         }
     }
 
+
     // Extrae y devuelve la lista de correos cuyo tiempo <= 0, eliminándolos de la cola.
     public synchronized List<Correo> sacarCorreo() {
         List<Correo> listos = new ArrayList<>();
@@ -48,7 +37,7 @@ public class BuzonCuarentena {
                 it.remove();
             }
         }
-        if (capacidad > 0) notifyAll();
+        notifyAll();
         return listos;
     }
 
