@@ -11,15 +11,38 @@ public class BuzonEntrega {
     }
 
     public synchronized void ponerCorreo(Correo correo){
-        while (correos.size()==capacidad){
-            Thread.yield();
+        while (capacidad > 0 && tamaño() == capacidad){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
         }
         correos.add(correo);
+        notifyAll();
     }
 
-    /*
-    public synchronized Correo sacarCorreo(){
-    
+    public synchronized Correo sacarCorreo() {
+        while (estaVacio()) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            }
+        }
+        Correo c = correos.poll();
+        notifyAll();
+        return c;
     }
-     */
+
+    public synchronized int tamaño() {
+        return correos.size();
+    }
+
+    public synchronized boolean estaVacio() {
+        return correos.isEmpty();
+    }
+
 }
