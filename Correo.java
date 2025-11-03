@@ -26,8 +26,10 @@ public class Correo {
     public void setTipoMensaje(int tipo){
         if (tipo == 0) {
             this.tipoMensaje = Tipo.INICIO;
+            this.flagSpam = false;
         } else if (tipo == 1) {
             this.tipoMensaje = Tipo.FIN;
+            this.flagSpam = false;
         } else {
             this.tipoMensaje = Tipo.OTRO;
         }

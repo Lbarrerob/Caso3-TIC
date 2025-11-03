@@ -1,6 +1,6 @@
 public class Emisor extends Thread {
     private static int totalCorreosProducir;
-    private int correosProducidos = 0;
+    private int correosProducidos = 1;
     private BuzonEntrada buzonEntrada;
 
     public Emisor(String name, BuzonEntrada bEntrada){
@@ -10,13 +10,16 @@ public class Emisor extends Thread {
 
     @Override
     public void run(){
-
+        for(int i=0; i<totalCorreosProducir; i++){
+            Correo c = generarCorreo();
+            buzonEntrada.ponerCorreo(c);
+        }
     }
 
     private Correo generarCorreo(){
         Correo correo = new Correo(this.getName()+" - Correo "+(correosProducidos));
         
-        if (correosProducidos == 0) {
+        if (correosProducidos == 1) {
             correo.setTipoMensaje(0);
         } else if (correosProducidos == totalCorreosProducir){
             correo.setTipoMensaje(1);
@@ -27,7 +30,7 @@ public class Emisor extends Thread {
         return correo;
     }
 
-    public static void setTotalToProduce(int total){
+    public static void setTotalCorreosProducir(int total){
         totalCorreosProducir = total;
     }
 }

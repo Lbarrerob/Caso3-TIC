@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class BuzonEntrada {
@@ -8,6 +9,7 @@ public class BuzonEntrada {
     public BuzonEntrada(int capacidad, int totalCorreos){
         this.capacidad = capacidad;
         this.totalCorreos = totalCorreos;
+        this.correos = new LinkedList<Correo>();
     }
 
     public synchronized void ponerCorreo(Correo correo){
@@ -33,7 +35,6 @@ public class BuzonEntrada {
             c = correos.poll();
             notify();
         }
-
         return c;
     }
 }
