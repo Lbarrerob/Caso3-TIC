@@ -38,7 +38,7 @@ public class BuzonCuarentena {
     }
 
     // Extrae y devuelve la lista de correos cuyo tiempo <= 0, eliminándolos de la cola.
-    public synchronized List<Correo> obtenerListoYLimpiar() {
+    public synchronized List<Correo> sacarCorreo() {
         List<Correo> listos = new ArrayList<>();
         Iterator<Correo> it = correos.iterator();
         while (it.hasNext()) {

@@ -3,17 +3,17 @@ import java.util.Random;
 
 
 public class GestorCuarentena extends Thread {
-    private final BuzonCuarentena caja;
+    private final BuzonCuarentena buzonCuarentena;
     private final BuzonEntrega buzonEntrega;
-    private final int intervaloMs;
+    private final int intervalo;
     private final Random rnd = new Random();
     private volatile boolean running = true;
 
-    public GestorCuarentena(BuzonCuarentena caja, BuzonEntrega buzonEntrega, int intervaloMs) {
+    public GestorCuarentena(BuzonCuarentena buzonCuarentena, BuzonEntrega buzonEntrega, int intervaloMs) {
         super("GestorCuarentena");
-        this.caja = caja;
+        this.buzonCuarentena = buzonCuarentena;
         this.buzonEntrega = buzonEntrega;
-        this.intervaloMs = Math.max(1, intervaloMs);
+        this.intervalo = Math.max(1, intervaloMs);
     }
 
     public void detener() {
@@ -25,14 +25,14 @@ public class GestorCuarentena extends Thread {
     public void run() {
         while (running) {
             try {
-                Thread.sleep(intervaloMs);
+                Thread.sleep(intervalo);
             } catch (InterruptedException e) {
                 if (!running) break;
             }
 
-            caja.decrementarTodos(intervaloMs);
+            buzonCuarentena.decrementarTodos(intervalo);
 
-            List<Correo> listos = caja.obtenerListoYLimpiar();
+            List<Correo> listos = buzonCuarentena.sacarCorreo();
 
             // Para cada listo, decidir descartar al azar % 7 == 0, o mover a entrega
             for (Correo c : listos) {
