@@ -1,0 +1,6 @@
+Numero clientes emisores: 5
+Numero total correos a producir por emisor: 5
+Numero de filtros spam: 5
+Numero servidores entrega: 5
+Capacidad buzon entrada: 10
+Capacidad buzon entrega: 10
