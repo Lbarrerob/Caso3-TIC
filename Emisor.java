@@ -17,7 +17,7 @@ public class Emisor extends Thread {
     }
 
     private Correo generarCorreo(){
-        Correo correo = new Correo(this.getName()+" - Correo "+(correosProducidos));
+        Correo correo = new Correo("Correo_"+(correosProducidos)+"("+this.getName()+")");
         
         if (correosProducidos == 1) {
             correo.setTipoMensaje(0);
