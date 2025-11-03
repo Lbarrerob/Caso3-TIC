@@ -18,18 +18,20 @@ public class FiltroSpam extends Thread{
 
     @Override
     public void run(){
-        while ((numInicios <= totalClientes) || (numFins != numInicios)) {
+        while ((numInicios <= totalClientes) || (numFins <= totalClientes)) {
             Correo c = buzonEntrada.sacarCorreo();
 
-            if (analizarParaSpam(c)){
+            if (c!= null) {
+                if (analizarParaSpam(c)){
                 buzonCuarentena.ponerCorreo(c);
-            } else {
-                if(c.getTipoMensaje() == Tipo.INICIO){
-                    numInicios++;
-                } else if (c.getTipoMensaje() == Tipo.FIN){
-                    numFins++;
+                } else {
+                    if(c.getTipoMensaje() == Tipo.INICIO){
+                        numInicios++;
+                    } else if (c.getTipoMensaje() == Tipo.FIN){
+                        numFins++;
+                    }
+                    buzonEntrega.ponerCorreo(c);
                 }
-                buzonEntrega.ponerCorreo(c);
             }
         }
         

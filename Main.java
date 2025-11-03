@@ -60,7 +60,7 @@ public class Main {
             //Emisores
         for (int i= 0; i<nEmisores ;i++){
            Emisor e = new Emisor("Emisor_"+i, bEntrada);
-           Emisor.setTotalCorreosProducir(totalCorreos);
+           Emisor.setTotalCorreosProducir(nCorreosEmisor);
            e.start();
         }
             //Filtros Spam
@@ -69,12 +69,12 @@ public class Main {
             FiltroSpam.setTotalClientes(nEmisores);
             f.start();
         }
-            /*Servidores de Entrega
+            //Servidores de Entrega
         for (int i= 0; i<nServidores ;i++){
-            ServidorEntrega s= new ServidorEntrega(BEN);
+            ServidorEntrega s= new ServidorEntrega("Servidor_"+i, bEntrega);
             s.start();
-        }*/
-            //Manejadores de Cuarentena
+        }
+            //Manejador de Cuarentena
         ManejadorCuarentena m = new ManejadorCuarentena(bCuarentena, bEntrega);
         m.start();
 

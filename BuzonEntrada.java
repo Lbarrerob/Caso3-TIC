@@ -19,6 +19,7 @@ public class BuzonEntrada {
             } catch (InterruptedException e) { }
         }
         correos.add(correo);
+        System.out.println("Se metió al buzón de entrada el "+ correo.getId());
         totalCorreos--;
         notify();
     }
@@ -33,6 +34,7 @@ public class BuzonEntrada {
 
         if (totalCorreos > 0) {
             c = correos.poll();
+            System.out.println("Se sacó al buzón de entrada el "+ c.getId());
             notify();
         }
         return c;

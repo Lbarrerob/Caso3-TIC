@@ -17,8 +17,13 @@ public class BuzonEntrega {
         correos.add(correo);
     }
 
-/*  public synchronized Correo sacarCorreo(){
-        while()
+    public synchronized Correo sacarCorreo() {
+        while (correos.isEmpty()) {
+           
+        }
+        
+        Correo c = correos.poll();
+        return c;
     }
-    */
+
 }
