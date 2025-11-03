@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 public class BuzonEntrega {
     private int capacidad;
@@ -25,15 +26,9 @@ public class BuzonEntrega {
 
     public synchronized Correo sacarCorreo() {
         while (estaVacio()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return null;
-            }
+            return null;
         }
         Correo c = correos.poll();
-        notifyAll();
         return c;
     }
 
