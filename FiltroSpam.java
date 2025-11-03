@@ -4,6 +4,7 @@ public class FiltroSpam extends Thread{
     private static int totalClientes;
     private int numInicios=0;
     private int numFins=0;
+    private static boolean finalizado=false;
 
     private BuzonEntrada buzonEntrada;
     private BuzonCuarentena buzonCuarentena;
@@ -31,8 +32,17 @@ public class FiltroSpam extends Thread{
                 buzonEntrega.ponerCorreo(c);
             }
         }
-        Correo mensajeFin = new Correo("Finalizado");
+        
+        if(!finalizado){
+            Correo mensajeFin = new Correo("Finalizado");
+            mensajeFin.setTiempo(20002);
+
+        //manda mensaje de finalización a Cuarentena y Entrega
+        buzonCuarentena.ponerCorreo(mensajeFin);
         buzonEntrega.ponerCorreo(mensajeFin);
+        finalizado = true;
+        
+        }
     }
 
     private boolean analizarParaSpam(Correo correo){

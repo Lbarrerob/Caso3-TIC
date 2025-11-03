@@ -23,6 +23,9 @@ public class ManejadorCuarentena extends Thread {
                     System.out.println("El manejador descartó " + c.getId());
                 } else {
                     buzonEntrega.ponerCorreo(c);
+                    if(c.getId().equals("Finalizado")){
+                        running = false;
+                    }
                 }
             }
         }
