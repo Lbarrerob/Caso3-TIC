@@ -15,12 +15,11 @@ public class ServidorEntrega extends Thread {
     public void run() {
         while (true) {
             Correo c = buzonEntrega.sacarCorreo();
-            if (c == null) break;
-
-            if (c.getTipoMensaje() == Tipo.FIN || "Finalizado".equals(c.getId())) {
-                System.out.println("[" + getName() + "] recibió FIN -> finaliza servidor");
-                break;
-            }
+            if (c != null) {
+                if (c.getTipoMensaje() == Tipo.FIN || "Finalizado".equals(c.getId())) {
+                    System.out.println("[" + getName() + "] recibió FIN -> finaliza servidor");
+                    break;
+                }
 
             try {
                 Thread.sleep(50 + rnd.nextInt(300));
@@ -30,6 +29,7 @@ public class ServidorEntrega extends Thread {
             }
             System.out.println("[" + getName() + "] procesó " + c.getId());
         }
+    }
         System.out.println("[" + getName() + "] terminado");
     }
 }
