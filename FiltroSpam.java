@@ -20,7 +20,9 @@ public class FiltroSpam extends Thread{
     public void run(){
         
         while ((numInicios < totalClientes) || (numFins < totalClientes)) {
+            
             Correo c = buzonEntrada.sacarCorreo();
+            System.out.println("Se sacó del buzón ENTRADA el " + c.getId());
 
             if (c!= null) {
                 if (analizarParaSpam(c)){
@@ -43,18 +45,22 @@ public class FiltroSpam extends Thread{
                     }
                 }
             }
+            System.out.println("atrapado");
+            
         }
-        
         if(!finalizado){
             Correo mensajeFin = new Correo("Finalizado");
             mensajeFin.setTiempo(200);
 
-        //manda mensaje de finalización a Cuarentena y Entrega
-        buzonCuarentena.ponerCorreo(mensajeFin);
-        buzonEntrega.ponerCorreo(mensajeFin);
-        finalizado = true;
-        System.out.println("finalizado filtro");
-        }
+                //manda mensaje de finalización a Cuarentena y Entrega
+            buzonCuarentena.ponerCorreo(mensajeFin);
+            buzonEntrega.ponerCorreo(mensajeFin);
+            System.out.println("Se envió el mensaje de señalamiento FINALIZADO a buzón CUARENTENA y ENTREGA");
+            finalizado = true;
+        
+            }
+        
+    
     }
 
     private boolean analizarParaSpam(Correo correo){

@@ -12,6 +12,7 @@ public class Emisor extends Thread {
     public void run(){
         for(int i=0; i<totalCorreosProducir; i++){
             Correo c = generarCorreo();
+            System.out.println("Se metió a buzón ENTRADA el " + c.getId());
             buzonEntrada.ponerCorreo(c);
         }
     }
