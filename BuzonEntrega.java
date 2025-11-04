@@ -11,8 +11,17 @@ public class BuzonEntrega {
         this.correos = new LinkedList<Correo>();
     }
 
+
+
     public synchronized void ponerCorreo(Correo correo){
         while (capacidad > 0 && tamaño() == capacidad){
+        /*
+        while (correos.size()==capacidad){
+            Thread.yield();
+        }
+        correos.add(correo);
+        }
+        */
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -22,8 +31,9 @@ public class BuzonEntrega {
         }
         System.out.println("[BuzonEntrega] Correo enviado a entrega: " + correo.getId());
         correos.add(correo);
-        notifyAll();
+        notify();
     }
+
 
     public synchronized Correo sacarCorreo() {
         while (estaVacio()) {

@@ -5,7 +5,6 @@ import java.util.Random;
 public class ManejadorCuarentena extends Thread {
     private final BuzonCuarentena buzonCuarentena;
     private final BuzonEntrega buzonEntrega;
-    private final int intervalo;
     private final Random rnd = new Random();
     private volatile boolean running = true;
     private int ciclos = 0;
@@ -14,7 +13,6 @@ public class ManejadorCuarentena extends Thread {
         super("ManejadorCuarentena");
         this.buzonCuarentena = buzonCuarentena;
         this.buzonEntrega = buzonEntrega;
-        this.intervalo = Math.max(1, intervaloMs);
     }
 
     public void detener() {
@@ -24,13 +22,7 @@ public class ManejadorCuarentena extends Thread {
 
     @Override
     public void run() {
-        System.out.println("[" + getName() + "] iniciado (intervalo " + intervalo + " ms).");
         while (running) {
-            try {
-                Thread.sleep(intervalo);
-            } catch (InterruptedException e) {
-                if (!running) break;
-            }
 
             ciclos++;
             int antes = buzonCuarentena.tamano();
@@ -38,8 +30,6 @@ public class ManejadorCuarentena extends Thread {
                 System.out.println("[" + getName() + "] ciclo " + ciclos + ": " + antes + " correos en cuarentena antes del decremento.");
             }
 
-            // Decrementar tiempos de espera en todos los correos en cuarentena
-            buzonCuarentena.decrementarTodos(intervalo);
 
             // Recuperar los correos que ya cumplieron su tiempo
             Queue<Correo> listos = buzonCuarentena.sacarCorreos();
