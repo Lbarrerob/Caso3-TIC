@@ -1,34 +1,46 @@
 import java.util.Random;
 
-public class ServidorEntrega extends Thread{
-    private Random rnd;
-    private boolean running = true;
-    private BuzonEntrega buzonEntrega;
+public class ServidorEntrega extends Thread {
+    private final int idServidor;
+    private final BuzonEntrega buzonEntrega;
+    private final Random rnd = new Random();
 
-    public ServidorEntrega(String name, BuzonEntrega bEntrega){
-        super(name);
-        this.rnd = new Random();
-        this.buzonEntrega = bEntrega;
+    public ServidorEntrega(int idServidor, BuzonEntrega buzonEntrega) {
+        super("Servidor-" + idServidor);
+        this.idServidor = idServidor;
+        this.buzonEntrega = buzonEntrega;
     }
 
     @Override
     public void run() {
-        while (running) {
+        System.out.println("[" + getName() + "] iniciado.");
+        while (true) {
             Correo c = buzonEntrega.sacarCorreo();
-            if (c != null) {
-                if ("Finalizado".equals(c.getId())) {
-                    System.out.println("[" + getName() + "] recibió FIN -> finaliza servidor");
-                    running = false;
-                } else {
-                    try {
-                        Thread.sleep(50 + rnd.nextInt(300));
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
-                    System.out.println("[" + getName() + "] procesó " + c.getId());
+            if (c == null) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
                 }
+                continue;
+            }
+
+            if (c.getTipoMensaje() == Tipo.FIN || "Finalizado".equals(c.getId())) {
+                System.out.println("[" + getName() + "] recibió FIN -> finaliza servidor");
+                break;
+            }
+
+            System.out.println("[" + getName() + "] recibió " + c.getId() + " -> procesando...");
+            try {
+                Thread.sleep(50 + rnd.nextInt(300)); 
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+
+            System.out.println("[" + getName() + "] procesó correctamente " + c.getId());
         }
-    }
-        System.out.println("[" + getName() + "] terminado");
+        System.out.println("[" + getName() + "] terminado.");
     }
 }

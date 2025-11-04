@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 public class BuzonEntrega {
     private int capacidad;
@@ -11,21 +12,33 @@ public class BuzonEntrega {
     }
 
     public synchronized void ponerCorreo(Correo correo){
-        while (correos.size()==capacidad){
-            Thread.yield();
+        while (capacidad > 0 && tamaño() == capacidad){
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
         }
-        System.out.println("Se metió al buzón de entrega el "+ correo.getId());
+        System.out.println("[BuzonEntrega] Correo enviado a entrega: " + correo.getId());
         correos.add(correo);
+        notifyAll();
     }
 
     public synchronized Correo sacarCorreo() {
-        Correo c =  null;
-        while (correos.isEmpty()) {
-           
+        while (estaVacio()) {
+            return null;
         }
-
-        c = correos.poll();
+        Correo c = correos.poll();
         return c;
+    }
+
+    public synchronized int tamaño() {
+        return correos.size();
+    }
+
+    public synchronized boolean estaVacio() {
+        return correos.isEmpty();
     }
 
 }

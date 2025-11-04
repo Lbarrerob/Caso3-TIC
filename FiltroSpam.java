@@ -47,7 +47,7 @@ public class FiltroSpam extends Thread{
         
         if(!finalizado){
             Correo mensajeFin = new Correo("Finalizado");
-            mensajeFin.setTiempo(20002);
+            mensajeFin.setTiempo(200);
 
         //manda mensaje de finalización a Cuarentena y Entrega
         buzonCuarentena.ponerCorreo(mensajeFin);
@@ -62,7 +62,7 @@ public class FiltroSpam extends Thread{
 
         if(correo.getFlagSpam()){
             Random t = new Random();
-            int tiempo = t.nextInt(10001)+10000;
+            int tiempo = t.nextInt(100)+100;
             
             correo.setTiempo(tiempo);
             esSpam = true;

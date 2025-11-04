@@ -37,4 +37,7 @@ public class BuzonEntrada {
         }
         return c;
     }
+    public synchronized int tamano(){
+        return correos.size();
+    }
 }
