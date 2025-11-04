@@ -2,8 +2,8 @@ import java.util.Random;
 
 public class FiltroSpam extends Thread{
     private static int totalClientes;
-    private int numInicios=0;
-    private int numFins=0;
+    private static int numInicios=0;
+    private static int numFins=0;
     private static boolean finalizado=false;
 
     private BuzonEntrada buzonEntrada;
@@ -18,19 +18,29 @@ public class FiltroSpam extends Thread{
 
     @Override
     public void run(){
-        while ((numInicios <= totalClientes) || (numFins <= totalClientes)) {
+        
+        while ((numInicios < totalClientes) || (numFins < totalClientes)) {
             Correo c = buzonEntrada.sacarCorreo();
 
             if (c!= null) {
                 if (analizarParaSpam(c)){
-                buzonCuarentena.ponerCorreo(c);
+                    System.out.println(c.getId()+" es Spam y se envia a CUARENTENA");
+                    buzonCuarentena.ponerCorreo(c);
+
                 } else {
+
                     if(c.getTipoMensaje() == Tipo.INICIO){
+                        System.out.println(c.getId()+" NO es Spam y se envia a ENTREGA");
+                        buzonEntrega.ponerCorreo(c);
                         numInicios++;
                     } else if (c.getTipoMensaje() == Tipo.FIN){
+                        System.out.println(c.getId()+" NO es Spam y se envia a ENTREGA");
+                        buzonEntrega.ponerCorreo(c);
                         numFins++;
+                    } else {
+                        System.out.println(c.getId()+" NO es Spam y se envia a ENTREGA");
+                        buzonEntrega.ponerCorreo(c);
                     }
-                    buzonEntrega.ponerCorreo(c);
                 }
             }
         }
@@ -43,14 +53,14 @@ public class FiltroSpam extends Thread{
         buzonCuarentena.ponerCorreo(mensajeFin);
         buzonEntrega.ponerCorreo(mensajeFin);
         finalizado = true;
-        
+        System.out.println("finalizado filtro");
         }
     }
 
     private boolean analizarParaSpam(Correo correo){
         boolean esSpam = false;
 
-        if(!correo.getFlagSpam()){
+        if(correo.getFlagSpam()){
             Random t = new Random();
             int tiempo = t.nextInt(10001)+10000;
             

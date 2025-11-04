@@ -14,15 +14,17 @@ public class BuzonEntrega {
         while (correos.size()==capacidad){
             Thread.yield();
         }
+        System.out.println("Se metió al buzón de entrega el "+ correo.getId());
         correos.add(correo);
     }
 
     public synchronized Correo sacarCorreo() {
+        Correo c =  null;
         while (correos.isEmpty()) {
            
         }
-        
-        Correo c = correos.poll();
+
+        c = correos.poll();
         return c;
     }
 

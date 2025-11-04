@@ -30,7 +30,7 @@ public class Correo {
         } else if (tipo == 1) {
             this.tipoMensaje = Tipo.FIN;
             this.flagSpam = false;
-        } else {
+        } else if (tipo == 2) {
             this.tipoMensaje = Tipo.OTRO;
         }
     }
