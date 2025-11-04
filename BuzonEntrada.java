@@ -31,7 +31,7 @@ public class BuzonEntrada {
             } catch (InterruptedException e) { }   
         }
 
-        if (totalCorreos > 0) {
+        if (totalCorreos >= 0) {
             c = correos.poll();
             notify();
         }

@@ -20,6 +20,7 @@ public class BuzonEntrega {
                 return;
             }
         }
+        System.out.println("[BuzonEntrega] Correo enviado a entrega: " + correo.getId());
         correos.add(correo);
         notifyAll();
     }
